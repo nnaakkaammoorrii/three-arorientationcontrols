@@ -248,3 +248,5 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		options.error('Invalid mode');
 	}
 };
+
+module.exports = exports.default = THREE.AROrientationControls;

@@ -1,0 +1,22 @@
+{
+  "name": "three-arorientationcontrols",
+  "version": "0.0.1",
+  "description": "",
+  "main": "AROrientationControls.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nnaakkaammoorrii/three-arorientationcontrols.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nnaakkaammoorrii/three-arorientationcontrols/issues"
+  },
+  "homepage": "https://github.com/nnaakkaammoorrii/three-arorientationcontrols#readme"
+}
