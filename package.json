@@ -18,5 +18,13 @@
   "bugs": {
     "url": "https://github.com/nnaakkaammoorrii/three-arorientationcontrols/issues"
   },
+  "keywords": [
+    "three",
+    "three.js",
+    "3d",
+    "camera",
+    "controls",
+    "ar"
+  ],
   "homepage": "https://github.com/nnaakkaammoorrii/three-arorientationcontrols#readme"
 }
