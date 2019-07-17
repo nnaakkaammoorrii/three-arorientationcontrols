@@ -30,7 +30,7 @@ module.exports = {
 	entry: './src/index.js',
 
 	output: {
-		filename: '[name].[chunkhash].js',
+		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist')
 	},
 
@@ -55,6 +55,20 @@ module.exports = {
 						]
 					]
 				}
+			},
+			{
+				test: /\.css/,
+				use: [
+					"style-loader",
+					{
+						loader: "css-loader",
+						options: { url: false }
+					}
+				]
+			},
+			{
+				test: /\.(jpg|png)$/,
+				loaders: 'url-loader'
 			}
 		]
 	},

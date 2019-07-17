@@ -1,3 +1,6 @@
+import "./style.css";
+import skyboxpng from './skybox.png'
+
 const THREE = require('three');
 const AROrientationControls = require('three-arorientationcontrols');
 
@@ -19,7 +22,7 @@ var controls = new THREE.AROrientationControls(camera, scene, renderer.domElemen
 			var geometry = new THREE.SphereGeometry(5, 60, 40);
 			geometry.scale(-1, 1, 1);
 			var material = new THREE.MeshBasicMaterial({
-				map: THREE.ImageUtils.loadTexture('skybox.png')
+				map: THREE.ImageUtils.loadTexture(skyboxpng)
 			});
 	
 			var sphere = new THREE.Mesh(geometry, material);
