@@ -1,4 +1,6 @@
-const THREE = require('three');
+if (typeof require != 'undefined') {
+	const THREE = require('three');
+}
 
 THREE.AROrientationControls = function(object, scene, domElement, options) {
 
@@ -112,15 +114,15 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 	var dragEnd = new THREE.Vector2();
 	var dragDelta = new THREE.Vector2();
 
-	var startRotate = function(event) {
-		dragStart.set(event.clientX, event.clientY);
+	var startRotate = function(clientX, clientY) {
+		dragStart.set(clientX, clientY);
 		rotateStart = new THREE.Vector2(scope.object.rotation.x, scope.object.rotation.y);
 	}
 
-	var doRotate = function(event) {
+	var doRotate = function(clientX, clientY) {
 		if (rotateStart == null) return;
 
-		dragEnd.set(event.clientX, event.clientY);
+		dragEnd.set(clientX, clientY);
 
 		dragDelta.subVectors(dragEnd, dragStart).multiplyScalar(1.0);
 
@@ -128,8 +130,35 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		scope.object.rotation.x = 2 * Math.PI * (dragDelta.y / scope.domElement.clientHeight) + rotateStart.x;
 	}
 
-	var endRotate = function(event) {
+	var endRotate = function() {
 		rotateStart = null;
+	}
+	
+	var onMouseDown = function(event) {
+		startRotate(event.clientX, event.clientY);
+	}
+	
+	var onMouseMove = function(event) {
+		doRotate(event.clientX, event.clientY);
+	}
+	
+	var onMouseUp = function(event) {
+		endRotate();
+	}
+	
+	var onTouchStart = function(event) {
+		event.preventDefault();
+		startRotate(event.touches[0].clientX, event.touches[0].clientY);
+	}
+	
+	var onTouchMove = function(event) {
+		event.preventDefault();
+		event.stopPropagation();
+		doRotate(event.touches[0].clientX, event.touches[0].clientY);
+	}
+	
+	var onTouchEnd = function(event) {
+		endRotate();
 	}
 
 	var connectAr = function() {
@@ -143,9 +172,13 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 	}
 
 	var connectVr = function() {
-		document.addEventListener('mousedown', startRotate, false);
-		document.addEventListener('mousemove', doRotate, false);
-		document.addEventListener('mouseup', endRotate, false);
+		document.addEventListener('mousedown', onMouseDown, false);
+		document.addEventListener('mousemove', onMouseMove, false);
+		document.addEventListener('mouseup', onMouseUp, false);
+		
+		document.addEventListener('touchstart', onTouchStart, false);
+		document.addEventListener('touchmove', onTouchMove, false);
+		document.addEventListener('touchend', onTouchEnd, false);
 	}
 
 	this.connect = function() {
@@ -251,4 +284,6 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 	}
 };
 
-module.exports = exports.default = THREE.AROrientationControls;
+if (typeof module != 'undefined') {
+	module.exports = exports.default = THREE.AROrientationControls;
+}
