@@ -2,6 +2,8 @@
 
 > This is a module to control AR (3DoF) with three.js.
 
+CAUTION:Still debugging
+
 # Installation
 
 To install with npm do
