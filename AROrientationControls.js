@@ -1,3 +1,5 @@
+const THREE = require('three');
+
 THREE.AROrientationControls = function(object, scene, domElement, options) {
 
 	var scope = this;
