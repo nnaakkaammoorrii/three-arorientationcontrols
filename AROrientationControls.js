@@ -1,7 +1,4 @@
-if (typeof require != 'undefined') {
-	const THREE = require('three');
-}
-
+var THREE = (typeof require === 'undefined') ? THREE : require('three');
 THREE.AROrientationControls = function(object, scene, domElement, options) {
 
 	var scope = this;
