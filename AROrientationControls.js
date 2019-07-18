@@ -121,7 +121,7 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 
 		dragEnd.set(clientX, clientY);
 
-		dragDelta.subVectors(dragEnd, dragStart).multiplyScalar(1.0);
+		dragDelta.subVectors(dragEnd, dragStart).multiplyScalar(0.5);
 
 		scope.object.rotation.y = 2 * Math.PI * (dragDelta.x / scope.domElement.clientWidth) + rotateStart.y;
 		scope.object.rotation.x = 2 * Math.PI * (dragDelta.y / scope.domElement.clientHeight) + rotateStart.x;
