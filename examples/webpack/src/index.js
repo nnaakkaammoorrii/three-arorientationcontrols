@@ -59,3 +59,7 @@ var animate = function () {
 };
 
 animate();
+
+renderer.domElement.addEventListener('dblclick', function() {
+	controls.changeMode('vr');
+}, false);

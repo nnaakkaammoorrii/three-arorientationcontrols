@@ -64,10 +64,11 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 				mode = 'vr';
 				if (videoStream) {
 					videoStream.getVideoTracks()[0].stop();
+					videoStream = null;
 				}
 			}
 			else {
-				if (options.error) options.error();
+				if (options.error) options.error("Invalid mode or AR mode could not be started.");
 			}
 		}
 
@@ -88,13 +89,12 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		var zee = new THREE.Vector3(0, 0, 1);
 		var euler = new THREE.Euler();
 		var q0 = new THREE.Quaternion();
-		var q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5)); // - PI/2 around the x-axis
+		var q1 = new THREE.Quaternion(-Math.sqrt(0.5), 0, 0, Math.sqrt(0.5));
 		return function(quaternion, alpha, beta, gamma, orient) {
-			euler.set(beta, alpha, -gamma, 'YXZ'); // 'ZXY' for the device, but 'YXZ' for us
-			quaternion.setFromEuler(euler); // orient the device
-			quaternion.multiply(q1); // camera looks out the back of the device, not the top
-			quaternion.multiply(q0.setFromAxisAngle(zee, -orient)); // adjust for screen orientation
-
+			euler.set(beta, alpha, -gamma, 'YXZ');
+			quaternion.setFromEuler(euler);
+			quaternion.multiply(q1);
+			quaternion.multiply(q0.setFromAxisAngle(zee, -orient));
 		};
 	}();
 
@@ -194,15 +194,21 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		window.removeEventListener('orientationchange', onScreenOrientationChangeEvent, false);
 		window.removeEventListener('deviceorientation', onDeviceOrientationChangeEvent, false);
 
-		bgVideo.stop();
-		videoStream.getVideoTracks().forEach(function(devise) {
-			devise.stop();
+		videoStream.getVideoTracks().forEach(function(track) {
+			track.stop();
 		});
 		videoStream = null;
+		scene.background = null;
 	}
 
 	var disconnectVr = function() {
-		document.removeEventListener('mousemove', onMouseMoveEvent, false);
+		document.removeEventListener('mousedown', onMouseDown, false);
+		document.removeEventListener('mousemove', onMouseMove, false);
+		document.removeEventListener('mouseup', onMouseUp, false);
+		
+		document.removeEventListener('touchstart', onTouchStart, false);
+		document.removeEventListener('touchmove', onTouchMove, {passive: false});
+		document.removeEventListener('touchend', onTouchEnd, false);
 	}
 
 	this.disconnect = function() {
@@ -262,7 +268,19 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		}
 	};
 
-	this.changeMode = function() {};
+	this.changeMode = function(change) {
+		if (change === 'ar' && (!canUseDeviceorientation || !canUseCamera)) {
+			return;
+		}
+		
+		if (mode == change) {
+			return;
+		}
+		
+		scope.disconnect();
+		mode = change;
+		scope.connect();
+	};
 
 	if (options.mode === 'ar') {
 		if (window.DeviceMotionEvent) {
@@ -277,7 +295,7 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		init();
 	}
 	else {
-		options.error('Invalid mode');
+		options.error('Invalid mode.');
 	}
 };
 
