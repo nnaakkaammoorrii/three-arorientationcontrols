@@ -173,9 +173,9 @@ THREE.AROrientationControls = function(object, scene, domElement, options) {
 		document.addEventListener('mousemove', onMouseMove, false);
 		document.addEventListener('mouseup', onMouseUp, false);
 		
-		document.addEventListener('touchstart', onTouchStart, false);
-		document.addEventListener('touchmove', onTouchMove, false);
-		document.addEventListener('touchend', onTouchEnd, false);
+		document.addEventListener('touchstart', onTouchStart, {passive: false});
+		document.addEventListener('touchmove', onTouchMove, {passive: false});
+		document.addEventListener('touchend', onTouchEnd, {passive: false});
 	}
 
 	this.connect = function() {
